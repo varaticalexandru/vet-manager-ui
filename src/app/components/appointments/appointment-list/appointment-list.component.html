@@ -1,8 +1,24 @@
 <div class="mat-card-container">
-    <mat-card class="appointment-list-card">
+  <mat-card class="appointment-list-card">
+    <mat-card-title class="appointments-title"> Appointments </mat-card-title>
 
-        <mat-card-content>
-            
-        </mat-card-content>
-    </mat-card>
+    <mat-card-content>
+      <app-table
+        [displayedColumns]="[
+          'petName',
+          'doctorFirstName',
+          'doctorLastName',
+          'date',
+          'status',
+          'diagnostic',
+          'totalCost',
+          'actions'
+        ]"
+      ></app-table>
+    </mat-card-content>
+  </mat-card>
 </div>
+
+<button mat-fab color="primary" class="fab-button">
+  <mat-icon>add</mat-icon>
+</button>
