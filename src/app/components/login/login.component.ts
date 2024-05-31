@@ -81,7 +81,7 @@ submit() {
         this.isLoading = false;
 
         if (data) {
-          this.router.navigate(['/']);
+          this.router.navigate(['/appointments']);
         }
         else {
           this.error = true;
