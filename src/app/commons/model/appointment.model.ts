@@ -10,4 +10,18 @@ export interface Appointment {
   status: 'CREATED' | 'CONFIRMED' | 'CLOSED';
   doctor: Doctor;
   services: Service[];
+  totalCost: number;
 }
+
+export interface AppointmentUpdate {
+    id: number;
+    date: string;
+    diagnostic: string | null;
+    petName: Pet;
+    status: 'CREATED' | 'CONFIRMED' | 'CLOSED';
+    doctorFirstName: string;
+    doctorLastName: string;
+  }
+  
+
+export const statusOptions = ['CREATED', 'CONFIRMED', 'CLOSED'];

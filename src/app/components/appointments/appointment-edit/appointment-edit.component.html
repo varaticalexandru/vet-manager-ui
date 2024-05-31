@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>Edit Appointment</h1>
+<div mat-dialog-content>
+  <form [formGroup]="appointmentForm">
+    <mat-form-field class="full-width">
+      <mat-label>Pet Name</mat-label>
+      <input matInput formControlName="petName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Doctor First Name</mat-label>
+      <input matInput formControlName="doctorFirstName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Doctor Last Name</mat-label>
+      <input matInput formControlName="doctorLastName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput formControlName="date" type="date">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Status</mat-label>
+      <!-- <input matInput formControlName="status"> -->
+      <mat-select formControlName="status">
+        @for (status of statusOptions; track $index) {
+            <mat-option [value]="status">
+                {{status}}
+              </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Diagnostic</mat-label>
+      <input matInput formControlName="diagnostic">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Total Cost</mat-label>
+      <input [disabled]="true" matInput formControlName="totalCost">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="!appointmentForm.valid">Save</button>
+</div>
