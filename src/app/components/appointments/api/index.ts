@@ -1,0 +1,1 @@
+export { APPOINTMENT_ROUTES } from "./routes";
