@@ -5,7 +5,9 @@ import { Appointments } from '../model/appointments.model';
 import { TableComponent } from './appointments-table/table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentAddComponent } from '../appointment-add/appointment-add.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-appointment-list',
@@ -14,16 +16,17 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     TableComponent,
     MatButtonModule,
-    MatIconModule
-
+    MatIconModule,
+    MatCardModule,
+    MatProgressBarModule
   ],
   templateUrl: './appointment-list.component.html',
-  styleUrl: './appointment-list.component.scss'
+  styleUrl: './appointment-list.component.scss',
 })
 export class AppointmentListComponent implements OnInit, OnDestroy {
-
   constructor(
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -31,13 +34,23 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   }
 
   loadAppointments(): void {
-    this.appointmentService.fetchAllAppointments().subscribe(
-      (appointments: Appointments) => {
+    this.appointmentService
+      .fetchAllAppointments()
+      .subscribe((appointments: Appointments) => {
         // console.log(appointments);
-      }
-    )
+      });
   }
 
   ngOnDestroy(): void {}
 
+  goToNewAppointment() {
+    const dialogRef = this.dialog.open(AppointmentAddComponent, {
+      maxWidth: '1200',
+      maxHeight: '800',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
 }
