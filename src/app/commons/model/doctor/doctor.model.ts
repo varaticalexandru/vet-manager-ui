@@ -3,3 +3,7 @@ export interface Doctor {
   firstName: string;
   lastName: string;
 }
+
+export interface Doctors {
+  doctors: Array<Doctor>;
+}

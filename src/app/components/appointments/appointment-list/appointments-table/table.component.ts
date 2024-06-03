@@ -21,13 +21,10 @@ import {
   debounceTime,
 } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AppointmentService } from '../../service/appointment.service';
-import { Appointment } from '../../../../commons/model/appointment.model';
-import { PaginatedResponse } from '../../model/paginated-response.model';
-import { emptyPaginatedResponse } from '../../../../commons/utils/paginated-response.utils';
+import { AppointmentService } from '../../../../commons/services/appointment/appointment.service';
+import { Appointment, PaginatedResponse, emptyAppointmentsPaginated } from '../../../../commons/model/appointment/appointment.model';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatFormFieldControl,
   MatFormFieldModule,
 } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -123,7 +120,7 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? parseFloat(this.totalCostFilter.value)
                 : null
             )
-            .pipe(catchError(() => of(emptyPaginatedResponse())));
+            .pipe(catchError(() => of(emptyAppointmentsPaginated)));
         }),
         map((data: PaginatedResponse) => {
           this.isLoadingResults = false;
@@ -183,7 +180,7 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
           ? parseFloat(this.totalCostFilter.value)
           : null
       )
-      .pipe(catchError(() => of(emptyPaginatedResponse())))
+      .pipe(catchError(() => of(emptyAppointmentsPaginated)))
       .subscribe((data: PaginatedResponse) => {
         this.isLoadingResults = false;
         this.resultsLength = data.totalElements;

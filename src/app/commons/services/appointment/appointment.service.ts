@@ -1,16 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
-import { Appointments } from '../model/appointments.model';
 import { environment } from '../../../../environments/environment';
-import { PaginatedResponse } from '../model/paginated-response.model';
-import { emptyPaginatedResponse } from '../../../commons/utils/paginated-response.utils';
-import { Appointment, AppointmentUpdate } from '../../../commons/model/appointment.model';
+import { Appointment, NewAppointment, AppointmentUpdate, Appointments, PaginatedResponse, emptyAppointmentsPaginated } from '../../model/appointment/appointment.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
+  create_url = `${environment.backend.url}/appointments`;
   fetch_all_url = `${environment.backend.url}/appointments/all`;
   fetch_by_pageable_and_filters = `${environment.backend.url}/appointments`;
   update_url = `${environment.backend.url}/appointments`;
@@ -62,8 +60,12 @@ export class AppointmentService {
     }
 
     return this.http.get<PaginatedResponse>(this.fetch_by_pageable_and_filters, { params }).pipe(
-      catchError(() => of(emptyPaginatedResponse())
+      catchError(() => of(emptyAppointmentsPaginated)
     ));
+  }
+
+  addAppointment(appointment: NewAppointment): Observable<Appointment> {
+    return this.http.post<Appointment>(`${this.create_url}`, appointment);
   }
 
   updateAppointment(id: number, appointment: Partial<AppointmentUpdate>): Observable<Appointment> {

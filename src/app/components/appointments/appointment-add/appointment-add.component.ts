@@ -1,5 +1,6 @@
 import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormGroup,
   FormsModule,
@@ -13,16 +14,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NativeDateModule } from '@angular/material/core';
-import { statusOptions } from '../../../commons/model/appointment.model';
-import { extractDatePart } from '../../../commons/utils/date-utils';
-import { Doctor } from '../../../commons/model/doctor.model';
+import { Appointment, NewAppointment, statusOptions } from '../../../commons/model/appointment/appointment.model';
+import { extractDatePart, getDateTime } from '../../../commons/utils/date-utils';
+import { Doctor } from '../../../commons/model/doctor/doctor.model';
 import { DoctorService } from '../../../commons/services/doctor/doctor.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { Observable, map } from 'rxjs';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-import { Pet } from '../../../commons/model/pet.model';
+import { Pet } from '../../../commons/model/pet/pet.model';
 import { PetService } from '../../../commons/services/pets/pet.service';
+import { AppointmentService } from '../../../commons/services/appointment/appointment.service';
+import { ServiceService } from '../../../commons/services/service/service.service';
+import { Service, NewService, Services } from '../../../commons/model/service/service.model';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-appointment-add',
@@ -40,6 +45,8 @@ import { PetService } from '../../../commons/services/pets/pet.service';
     DatePipe,
     NgxMatTimepickerModule,
     MatDatepickerModule,
+    CurrencyPipe,
+    MatIconModule
   ],
   providers: [],
   templateUrl: './appointment-add.component.html',
@@ -49,6 +56,7 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
   statusOptions: string[] = [];
   doctors: Doctor[] = [];
   pets: Pet[] = [];
+  services: Service[] = [];
   appointmentForm!: FormGroup;
   newDoctor: boolean = false;
   newPet: boolean = false;
@@ -57,20 +65,24 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AppointmentAddComponent>,
     private doctorService: DoctorService,
-    private petService: PetService
+    private appointmentService: AppointmentService,
+    private petService: PetService,
+    private serviceService: ServiceService
   ) {
     this.appointmentForm = this.fb.group({
-      newPet: [''],
-      petId: [''],
-      newDoctor: [''],
-      doctorId: [''],
+      newPet: [''], //boolean flag
+      pet: [''],
+      newDoctor: [''],  // boolean flag
+      doctor: [''],
       date: ['', Validators.required],
       time: ['', Validators.required],
-      diagnostic: [''],
+      services: ['', Validators.required],
+      newServices: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
+    this.loadServices();
     this.loadDoctors();
     this.loadPets();
     this.statusOptions = statusOptions;
@@ -79,9 +91,23 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   save() {
+    console.log(this.appointmentForm.value);
+    
     if (this.appointmentForm.valid) {
-      console.log(this.appointmentForm.value);
-      
+      const reqObj: NewAppointment = {
+        date:  getDateTime(
+          this.appointmentForm.value['date'],
+          this.appointmentForm.value['time'],
+        ),
+        newPet: this.appointmentForm.value['newPet'],
+        pet: this.appointmentForm.value['pet'],
+        newDoctor: this.appointmentForm.value['newDoctor'],
+        doctor: this.appointmentForm.value['doctor']
+      }
+
+      console.log(reqObj);
+
+      this.appointmentService.addAppointment(reqObj).subscribe((response: Appointment) => console.log(response));
       
       this.dialogRef.close(this.appointmentForm.value);
     }
@@ -113,6 +139,15 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       });
   }
 
+  loadServices() {
+    this.serviceService
+      .fetchAllServices()
+      .subscribe((services: Services) => {
+        console.log(services);
+        this.services = services.services;
+      });
+  }
+
   flipNewDoctor() {
     this.newDoctor = !this.newDoctor;
     this.appointmentForm.patchValue({
@@ -125,5 +160,21 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     this.appointmentForm.patchValue({
       newPet: this.newPet
     });
+  }
+
+  get newServices(): FormArray {
+    return this.appointmentForm.get('newServices') as FormArray;
+  }
+
+  addNewService() {
+    const newServiceGroup = this.fb.group({
+      name: ['', Validators.required],
+      price: ['', Validators.required]
+    });
+    this.newServices.push(newServiceGroup);
+  }
+
+  removeNewService(index: number) {
+    this.newServices.removeAt(index);
   }
 }

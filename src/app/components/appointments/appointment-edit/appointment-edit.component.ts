@@ -7,13 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { Appointment } from '../../../commons/model/appointment.model';
+import { Appointment } from '../../../commons/model/appointment/appointment.model';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { extractDatePart } from '../../../commons/utils/date-utils';
 import { MatSelectModule } from '@angular/material/select';
-import { statusOptions } from '../../../commons/model/appointment.model';
+import { statusOptions } from '../../../commons/model/appointment/appointment.model';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NativeDateModule } from '@angular/material/core';
 

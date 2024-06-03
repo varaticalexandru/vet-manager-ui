@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { AppointmentService } from '../service/appointment.service';
-import { Appointments } from '../model/appointments.model';
+import { AppointmentService } from '../../../commons/services/appointment/appointment.service';
 import { TableComponent } from './appointments-table/table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentAddComponent } from '../appointment-add/appointment-add.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Appointments } from '../../../commons/model/appointment/appointment.model';
 
 @Component({
   selector: 'app-appointment-list',
@@ -50,7 +50,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      // console.log(result);
     });
   }
 }

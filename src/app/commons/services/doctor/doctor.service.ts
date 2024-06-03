@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Doctor } from '../../model/doctor.model';
+import { Doctor, Doctors } from '../../model/doctor/doctor.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -15,8 +15,8 @@ export class DoctorService {
     private http: HttpClient
   ) { }
 
-  fetchAllDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(
+  fetchAllDoctors(): Observable<Doctors> {
+    return this.http.get<Doctors>(
       this.fetchAllDoctorsUrl
     )
   }
