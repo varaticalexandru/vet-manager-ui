@@ -13,6 +13,7 @@ import {MatIcon, MatIconModule} from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import {MatButton, MatButtonModule} from "@angular/material/button";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 
@@ -40,6 +41,7 @@ import {MatButton, MatButtonModule} from "@angular/material/button";
     MatButton,
     MatCardFooter,
     MatProgressBar,
+    MatSlideToggleModule
   ],
 })
 export class LoginComponent implements OnInit {
