@@ -1,20 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-// html, body { height: 100%; }
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
 @use '@angular/material' as mat;
 @use '@angular/material-experimental' as matx;
 
-
-$m3-dark-theme: matx.define-theme((
-  color: (
-    theme-type: dark,
-    primary: matx.$m3-blue-palette,
-    tertiary: matx.$m3-blue-palette,
-  )
-));
+// $m3-dark-theme: matx.define-theme((
+//   color: (
+//     theme-type: dark,
+//     primary: matx.$m3-blue-palette,
+//     tertiary: matx.$m3-blue-palette,
+//   )
+// ));
 
 $m3-light-theme: matx.define-theme((
   color: (
@@ -23,55 +18,16 @@ $m3-light-theme: matx.define-theme((
     )
 ));
 
-.dark-theme {
-  @include mat.all-component-themes($m3-dark-theme);
-}
+// .dark-theme {
+//   @include mat.all-component-themes($m3-dark-theme);
+// }
 
 .light-theme {
   @include mat.all-component-themes($m3-light-theme);
 }
 
-
-// @font-face {
-//     font-family: 'Open Sans';
-//     src: url('assets/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
-// }
-
-// @font-face {
-//     font-family: 'Open Sans Italic';
-//     src: url('assets/fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf') format('truetype');
-// }
-
-// .open-sans-400 {
-//     font-family: "Open Sans", sans-serif;
-//     font-optical-sizing: auto;
-//     font-weight: 400;
-//     font-style: normal;
-//     font-variation-settings:
-//         "wdth" 100;
-// }
-
-
 html,
-body {
-    height: 100%;
-}
-
-// body {
-//     margin: 0;
-//     font-family: 'Open Sans';
-// }
-
-
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-// * {
-//     box-sizing: border-box;
-//   }
-// html, body { height: 100%; }
-body { margin: 0; font-family: 'Open Sans', "Helvetica Neue", sans-serif; }
+body { height: 100%; margin: 0; font-family: 'Open Sans', "Helvetica Neue", sans-serif; }
 
 .mdc-switch .mdc-switch__handle-track {
   width: calc(100% - 52px) !important;
