@@ -4,8 +4,8 @@ import { MatCard, MatCardContent, MatCardFooter, MatCardModule, MatCardTitle } f
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FailedAuthComponent } from './failed-auth/failed-auth.component';
-import { UserLogin } from './model/user-login.model';
-import { LoginService } from './login-service/login.service';
+import { UserLogin } from '../../commons/model/auth/user-login.model';
+import { LoginService } from '../../commons/services/auth/login-service/login.service';
 import {MatProgressBar, MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatError, MatFormField, MatInput, MatInputModule, MatLabel, MatSuffix} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
