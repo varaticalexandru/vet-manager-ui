@@ -1,0 +1,109 @@
+<h1 mat-dialog-title>New <strong>Appointment</strong></h1>
+<div mat-dialog-content>
+
+  <div class="full-width slide-toggle">
+    <mat-slide-toggle
+      [checked]="newPet"
+      (change)="flipNewPet()"
+      color="primary"
+      >New pet</mat-slide-toggle
+    >
+  </div>
+
+  <form [formGroup]="appointmentForm">
+    @if (newPet) {
+    <mat-form-field class="full-width">
+      <mat-label>Pet Name</mat-label>
+      <input matInput formControlName="petId" />
+    </mat-form-field>
+    } @else {
+    <mat-form-field class="full-width">
+      <mat-label>Specity a pet name</mat-label>
+      <mat-select formControlName="petId">
+        @for (pet of pets; track pet.id) {
+        <mat-option [value]="pet.id">
+          {{ pet.name }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    }
+
+    <div class="full-width slide-toggle">
+      <mat-slide-toggle
+        [checked]="newDoctor"
+        (change)="flipNewDoctor()"
+        color="primary"
+        >New doctor</mat-slide-toggle
+      >
+    </div>
+
+    @if (newDoctor) {
+    <mat-form-field class="full-width">
+      <mat-label>New Doctor Name</mat-label>
+      <input matInput formControlName="doctorId" />
+    </mat-form-field>
+    } @else {
+    <mat-form-field class="full-width">
+      <mat-label>Choose a doctor</mat-label>
+      <mat-select formControlName="doctorId">
+        @for (doctor of doctors; track doctor.id) {
+        <mat-option [value]="doctor.id">
+          {{ doctor.firstName }} {{ doctor.lastName }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    }
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="pdt" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="pdt"></mat-datepicker-toggle>
+      <mat-datepicker #pdt type="datetime" [touchUi]="true">
+        <mat-datepicker-actions class="actions">
+          <button
+            class="dtp-action-button"
+            mat-button
+            color="warn"
+            matDatepickerCancel
+          >
+            CANCEL
+          </button>
+          <button
+            class="dtp-action-button"
+            mat-button
+            color="link"
+            matDatepickerApply
+          >
+            APPLY
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+      <mat-hint>{{ appointmentForm.value.datetime | date : "short" }}</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Choose a time</mat-label>
+      <input matInput [ngxMatTimepicker]="picker" formControlName="time" />
+      <ngx-mat-timepicker #picker></ngx-mat-timepicker>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Diagnostic</mat-label>
+      <input matInput formControlName="diagnostic" />
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="cancel()">CANCEL</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="!appointmentForm.valid"
+  >
+    ADD
+  </button>
+</div>
