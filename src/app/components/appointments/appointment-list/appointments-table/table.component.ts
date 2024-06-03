@@ -58,7 +58,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
-  page_size = 2;
+  page_size: number = 5;
 
   @Input() displayedColumns: Array<string> = [];
 
