@@ -91,7 +91,6 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   save() {
-    console.log(this.appointmentForm.value);
     
     if (this.appointmentForm.valid) {
       const reqObj: NewAppointment = {
@@ -99,10 +98,13 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
           this.appointmentForm.value['date'],
           this.appointmentForm.value['time'],
         ),
-        newPet: this.appointmentForm.value['newPet'],
+        // check if trimed value is empty, if so set to false
+        newPet: this.appointmentForm.value['newPet'] === '' ? false : this.appointmentForm.value['newPet'],
         pet: this.appointmentForm.value['pet'],
-        newDoctor: this.appointmentForm.value['newDoctor'],
-        doctor: this.appointmentForm.value['doctor']
+        newDoctor: this.appointmentForm.value['newDoctor'] === '' ? false : this.appointmentForm.value['newDoctor'],
+        doctor: this.appointmentForm.value['doctor'],
+        services: this.appointmentForm.value['services'],
+        newServices: this.appointmentForm.value['newServices']
       }
 
       console.log(reqObj);
@@ -122,7 +124,6 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       .fetchAllDoctors()
       .pipe(map((data: any): Doctor[] => data.doctors))
       .subscribe((doctors: Doctor[]) => {
-        console.log(doctors);
 
         this.doctors = doctors;
       });
@@ -133,7 +134,6 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       .fetchAllPets()
       .pipe(map((data: any): Pet[] => data.pets))
       .subscribe((pets: Pet[]) => {
-        console.log(pets);
 
         this.pets = pets;
       });
@@ -143,7 +143,6 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     this.serviceService
       .fetchAllServices()
       .subscribe((services: Services) => {
-        console.log(services);
         this.services = services.services;
       });
   }
