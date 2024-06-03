@@ -1,6 +1,6 @@
 import { Pet } from '../pet/pet.model';
 import { Doctor } from '../doctor/doctor.model';
-import { Service } from '../service/service.model';
+import { NewService, Service } from '../service/service.model';
 
 export const statusOptions = ['CREATED', 'CONFIRMED', 'CLOSED'];
 
@@ -28,6 +28,8 @@ export interface NewAppointment {
   pet: number | string | null | undefined;
   newDoctor: boolean | null | undefined;
   doctor: number | string | null | undefined;
+  services: number[];
+  newServices: NewService[];
 }
 
 export interface AppointmentUpdate {
