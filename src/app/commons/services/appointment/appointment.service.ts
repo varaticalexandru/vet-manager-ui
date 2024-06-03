@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { emptyPaginatedResponse } from '../../utils/paginated-response.utils';
-import { Appointment, NewAppointment, AppointmentUpdate, Appointments, PaginatedResponse } from '../../model/appointment/appointment.model';
+import { Appointment, NewAppointment, AppointmentUpdate, Appointments, PaginatedResponse, emptyAppointmentsPaginated } from '../../model/appointment/appointment.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,7 +60,7 @@ export class AppointmentService {
     }
 
     return this.http.get<PaginatedResponse>(this.fetch_by_pageable_and_filters, { params }).pipe(
-      catchError(() => of(emptyPaginatedResponse())
+      catchError(() => of(emptyAppointmentsPaginated)
     ));
   }
 
