@@ -10,6 +10,8 @@ import {
   BrowserAnimationsModule,
   provideAnimations,
 } from '@angular/platform-browser/animations';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       BrowserModule,
       FormsModule,
       ReactiveFormsModule,
+      MatNativeDateModule,
     )
-  ],
+  ]
 };
