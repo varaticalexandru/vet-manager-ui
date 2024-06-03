@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { extractDatePart } from '../../../commons/utils/date-utils';
 import { MatSelectModule } from '@angular/material/select';
 import { statusOptions } from '../../../commons/model/appointment.model';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-appointment-edit',
@@ -26,7 +28,9 @@ import { statusOptions } from '../../../commons/model/appointment.model';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    NativeDateModule
   ],
   templateUrl: './appointment-edit.component.html',
   styleUrl: './appointment-edit.component.scss',
@@ -43,8 +47,6 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: Appointment
   ) {
 
-    console.log(data.date);
-    
     this.appointmentForm = this.fb.group({
       petName: [data.pet.name, Validators.required],
       doctorFirstName: [data.doctor.firstName, Validators.required],
@@ -58,7 +60,6 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
 
   save() {
     if (this.appointmentForm.valid) {
-      console.log(this.appointmentForm.value);
       
       this.dialogRef.close(this.appointmentForm.value);
     }
