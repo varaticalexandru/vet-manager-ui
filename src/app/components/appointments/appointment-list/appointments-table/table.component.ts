@@ -37,6 +37,7 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentEditComponent } from '../../appointment-edit/appointment-edit.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-table',
@@ -53,7 +54,8 @@ import { AppointmentEditComponent } from '../../appointment-edit/appointment-edi
     MatInputModule,
     MatCardModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -124,7 +126,6 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(catchError(() => of(emptyPaginatedResponse())));
         }),
         map((data: PaginatedResponse) => {
-
           this.isLoadingResults = false;
 
           if (data.empty) {
@@ -146,20 +147,23 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
     const dialogRef = this.dialog.open(AppointmentEditComponent, {
       maxWidth: '1200',
       maxHeight: '800',
-      data: appointment
+      data: appointment,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.appointmentService.updateAppointment(appointment.id, result).subscribe(() => {
-          this.refreshTable();
-        });
+        console.log(result);
+
+        // this.appointmentService
+        //   .updateAppointment(appointment.id, result)
+        //   .subscribe(() => {
+        //     this.refreshTable();
+        //   });
       }
     });
   }
 
   refreshTable() {
-    
     this.isLoadingResults = true;
     this.appointmentService
       .fetchAppointmentsByPageable(

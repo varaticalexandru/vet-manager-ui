@@ -1,34 +1,43 @@
 mat-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 40px;
-    padding: 10px;
-    box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px;
+  padding: 10px;
+  box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
 }
 
 mat-card:hover {
-    box-shadow: 0px 8px 20px rgba(5, 2, 179, 0.3);
+  box-shadow: 0px 8px 20px rgba(5, 2, 179, 0.3);
 }
 
-
 .filter-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .wide-input {
-    width: 80%;
+  width: 80%;
 }
 
 .filter-container {
-    padding-top: 40px;
-    padding-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .action-button {
-    margin-right: 10px;
-  }
+  margin-right: 10px;
+}
+
+
+.header {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+mat-card-footer {
+  width: 100%;
+}
