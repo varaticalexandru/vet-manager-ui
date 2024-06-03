@@ -17,11 +17,13 @@ export interface AppointmentUpdate {
     id: number;
     date: string;
     diagnostic: string | null;
+    petId: number;
     petName: Pet;
     status: 'CREATED' | 'CONFIRMED' | 'CLOSED';
+    doctorId: number;
     doctorFirstName: string;
     doctorLastName: string;
-  }
+}
   
 
 export const statusOptions = ['CREATED', 'CONFIRMED', 'CLOSED'];
