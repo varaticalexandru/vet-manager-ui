@@ -14,3 +14,19 @@
 .dtp-action-button:last-child {
   margin-right: 20px !important;
 }
+
+.new-service-item {
+  display: flex;
+  align-items: start;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.new-service-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.width-80 {
+  width: 80%;
+}

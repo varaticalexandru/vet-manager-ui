@@ -1,11 +1,7 @@
-<h1 mat-dialog-title>New <strong>Appointment</strong></h1>
+<h1 mat-dialog-title class="full-width">New <strong>Appointment</strong></h1>
 <div mat-dialog-content>
-
   <div class="full-width slide-toggle">
-    <mat-slide-toggle
-      [checked]="newPet"
-      (change)="flipNewPet()"
-      color="primary"
+    <mat-slide-toggle [checked]="newPet" (change)="flipNewPet()" color="primary"
       >New pet</mat-slide-toggle
     >
   </div>
@@ -14,12 +10,12 @@
     @if (newPet) {
     <mat-form-field class="full-width">
       <mat-label>Pet Name</mat-label>
-      <input matInput formControlName="petId" />
+      <input matInput formControlName="pet" />
     </mat-form-field>
     } @else {
     <mat-form-field class="full-width">
       <mat-label>Specity a pet name</mat-label>
-      <mat-select formControlName="petId">
+      <mat-select formControlName="pet">
         @for (pet of pets; track pet.id) {
         <mat-option [value]="pet.id">
           {{ pet.name }}
@@ -41,12 +37,12 @@
     @if (newDoctor) {
     <mat-form-field class="full-width">
       <mat-label>New Doctor Name</mat-label>
-      <input matInput formControlName="doctorId" />
+      <input matInput formControlName="doctor" />
     </mat-form-field>
     } @else {
     <mat-form-field class="full-width">
       <mat-label>Choose a doctor</mat-label>
-      <mat-select formControlName="doctorId">
+      <mat-select formControlName="doctor">
         @for (doctor of doctors; track doctor.id) {
         <mat-option [value]="doctor.id">
           {{ doctor.firstName }} {{ doctor.lastName }}
@@ -90,9 +86,48 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Diagnostic</mat-label>
-      <input matInput formControlName="diagnostic" />
+      <mat-label>Choose desired services</mat-label>
+      <mat-select formControlName="services" multiple>
+        @for (service of services; track service.id) {
+        <mat-option [value]="service.id">{{ service.name }}</mat-option>
+        }
+      </mat-select>
     </mat-form-field>
+
+    <h2>New <strong>Services</strong></h2>
+
+    <div formArrayName="newServices" class="new-service-section">
+      @for (newService of newServices.controls; track newService.value; let i =
+      $index) {
+      <div [formGroupName]="i" class="new-service-item">
+        <div class="new-service-fields width-80">
+          <mat-form-field class="full-width">
+            <mat-label>New Service Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>New Service Price</mat-label>
+            <input matInput formControlName="price" type="number" />
+          </mat-form-field>
+        </div>
+        
+        <div class="delete-new-service-section">
+          <button
+          class="delete-new-service-button"
+          mat-mini-fab
+          color="warn"
+          (click)="removeNewService(i)"
+        >
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+        </div>
+      </div>
+      }
+    </div>
+    <button mat-raised-button color="primary" (click)="addNewService()">
+      Add New Service
+    </button>
   </form>
 </div>
 
