@@ -22,11 +22,13 @@ import {
 } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppointmentService } from '../../../../commons/services/appointment/appointment.service';
-import { Appointment, PaginatedResponse, emptyAppointmentsPaginated } from '../../../../commons/model/appointment/appointment.model';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  MatFormFieldModule,
-} from '@angular/material/form-field';
+  Appointment,
+  PaginatedResponse,
+  emptyAppointmentsPaginated,
+} from '../../../../commons/model/appointment/appointment.model';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -53,7 +55,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',

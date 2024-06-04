@@ -25,7 +25,10 @@ import {
   getDateTime,
 } from '../../../commons/utils/date-utils';
 import { MatSelectModule } from '@angular/material/select';
-import { statusOptions } from '../../../commons/model/appointment/appointment.model';
+import {
+  statusOptions,
+  statusOptionsLimited,
+} from '../../../commons/model/appointment/appointment.model';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -87,6 +90,10 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
     private serviceService: ServiceService,
     @Inject(MAT_DIALOG_DATA) public data: Appointment
   ) {
+
+    const initialTotalCost = this.calculateInitialTotalCost(this.data.services);
+    console.log(initialTotalCost);
+
     this.appointmentForm = this.fb.group({
       newPet: [''], //boolean flag
       pet: [''],
@@ -95,21 +102,31 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
       date: [extractDatePart(data.date), Validators.required],
       time: [extractLocalTime(data.date), Validators.required],
       status: [data.status, Validators.required],
-      diagnostic: [data.diagnostic],
-      services: [data.services.map((service: Service) => service.id), Validators.required],
+      diagnostic: [data.diagnostic ? data.diagnostic : ''],
+      services: [
+        data.services.map((service: Service) => service.id),
+        Validators.required,
+      ],
       newServices: this.fb.array([]),
-      totalCost: [{ value: data.totalCost, disabled: true }],
+      totalCost: [{ value: initialTotalCost, disabled: true }],
     });
   }
 
   ngOnInit(): void {
-    this.statusOptions = statusOptions;
+    this.statusOptions = statusOptionsLimited;
     this.loadServices();
     this.loadDoctors();
     this.loadPets();
 
     this.appointmentForm.controls['pet'].setValue(this.data.pet.id);
     this.appointmentForm.controls['doctor'].setValue(this.data.doctor.id);
+
+    this.appointmentForm.controls['services'].valueChanges.subscribe(() => {
+      setTimeout(() => this.updateTotalCost());
+    });
+    this.appointmentForm.controls['newServices'].valueChanges.subscribe(() => {
+      setTimeout(() => this.updateTotalCost());
+    });
   }
 
   save() {
@@ -136,7 +153,6 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
         diagnostic: this.appointmentForm.value['diagnostic'],
       };
 
-      
       this.appointmentService
         .updateAppointment(this.data.id, reqObj)
         .subscribe((response: Appointment) => {
@@ -198,13 +214,50 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
   addNewService() {
     const newServiceGroup = this.fb.group({
       name: ['', Validators.required],
-      price: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
     });
     this.newServices.push(newServiceGroup);
   }
 
   removeNewService(index: number) {
     this.newServices.removeAt(index);
+  }
+
+  get diagnostic() {
+    return this.appointmentForm.get('diagnostic')?.value !== '';
+  }
+
+  updateTotalCost() {
+    let totalCost = 0;
+
+    const selectedServiceIds = this.appointmentForm.value['services'];
+    for (const id of selectedServiceIds) {
+      const service = this.services.find((service) => service.id === id);
+      if (service && service.price) {
+        totalCost += service.price.cost;
+      }
+    }
+
+    const newServices = this.appointmentForm.value['newServices'];
+    for (const newService of newServices) {
+      if (newService.price) {
+        totalCost += newService.price;
+      }
+    }
+
+    this.appointmentForm.controls['totalCost'].setValue(totalCost);
+  }
+
+  calculateInitialTotalCost(services: any[]): number {
+    let totalCost = 0;
+
+    for (const service of services) {
+      if (service.price) {
+        totalCost += service.price.cost;
+      }
+    }
+
+    return totalCost;
   }
 
   getIconByStatus = getIconForStatus;

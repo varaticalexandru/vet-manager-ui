@@ -98,7 +98,7 @@
       <mat-select formControlName="services" multiple>
         @for (service of services; track service.id) {
         <mat-option [value]="service.id">
-          {{ service.name }}
+          {{ service.name }} - {{ service.price.cost }} {{ service.price.currency }}
           <mat-icon>settings</mat-icon>
         </mat-option>
       }
@@ -141,6 +141,11 @@
     <button mat-raised-button color="link" (click)="addNewService()">
       ADD SERVICE
     </button>
+
+    <mat-form-field class="full-width total-cost-field">
+      <mat-label>Total Cost</mat-label>
+      <input matInput formControlName="totalCost" />
+    </mat-form-field>
   </form>
 </div>
 

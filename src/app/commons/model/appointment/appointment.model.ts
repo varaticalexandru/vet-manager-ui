@@ -3,6 +3,7 @@ import { Doctor } from '../doctor/doctor.model';
 import { NewService, Service } from '../service/service.model';
 
 export const statusOptions = ['CREATED', 'CONFIRMED', 'CLOSED'];
+export const statusOptionsLimited = ['CREATED', 'CONFIRMED'];
 
 export type StatusOptions = 'CREATED' | 'CONFIRMED' | 'CLOSED';
 
