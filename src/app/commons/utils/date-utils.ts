@@ -3,8 +3,8 @@ export function extractDatePart(dateString: string): string {
   return dateString.split('T')[0];
 }
 
-export function getDateTime(date: string, time: string): string {
-  // convert time to 24h format
+// convert time to 24h format
+export function getDateTime(date: string, time: string): string {  
   const [hours, minutes, modifier] = time.split(':');
   let hours24 = parseInt(hours);
   if (modifier === 'PM' && hours24 !== 12) {
@@ -20,4 +20,10 @@ export function getDateTime(date: string, time: string): string {
 
   // convert to ISO 8601
   return dateTime.toISOString();
+}
+
+// ISO 8601 to "hh:mm AM/PM"
+export function extractLocalTime(dateString: string): string {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(date);
 }
