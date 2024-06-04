@@ -1,6 +1,6 @@
 export type Currency = 'USD' | 'EUR' | 'RON';
 
-export const currencies: String[] = ['USD', 'EUR', 'RON'];
+export const currencies: Array<String> = ['USD', 'EUR', 'RON'];
 
 export interface Price {
   cost: number;

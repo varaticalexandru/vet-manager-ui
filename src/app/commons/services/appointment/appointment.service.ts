@@ -2,16 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Appointment, NewAppointment, AppointmentUpdate, Appointments, PaginatedResponse, emptyAppointmentsPaginated } from '../../model/appointment/appointment.model';
+import { Appointment, NewAppointment, Appointments, PaginatedResponse, emptyAppointmentsPaginated, UpdAppointment } from '../../model/appointment/appointment.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
-  create_url = `${environment.backend.url}/appointments`;
+  base_url = `${environment.backend.url}/appointments`;
   fetch_all_url = `${environment.backend.url}/appointments/all`;
-  fetch_by_pageable_and_filters = `${environment.backend.url}/appointments`;
-  update_url = `${environment.backend.url}/appointments`;
 
   constructor(private http: HttpClient) {}
 
@@ -59,16 +57,20 @@ export class AppointmentService {
       params = params.set('totalCost', totalCost.toString());
     }
 
-    return this.http.get<PaginatedResponse>(this.fetch_by_pageable_and_filters, { params }).pipe(
+    return this.http.get<PaginatedResponse>(this.base_url, { params }).pipe(
       catchError(() => of(emptyAppointmentsPaginated)
     ));
   }
 
   addAppointment(appointment: NewAppointment): Observable<Appointment> {
-    return this.http.post<Appointment>(`${this.create_url}`, appointment);
+    return this.http.post<Appointment>(`${this.base_url}`, appointment);
   }
 
-  updateAppointment(id: number, appointment: Partial<AppointmentUpdate>): Observable<Appointment> {
-    return this.http.put<Appointment>(`${this.update_url}/${id}`, appointment);
+  updateAppointment(id: number, appointment: UpdAppointment): Observable<Appointment> {
+    return this.http.put<Appointment>(`${this.base_url}/${id}`, appointment);
+  }
+
+  deleteAppoitnment(id: number): Observable<Boolean> {
+    return this.http.delete<Boolean>(`${this.base_url}/${id}`);
   }
 }

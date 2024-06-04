@@ -147,7 +147,7 @@
             <mat-label
               >New Service <strong>#{{ i + 1 }}</strong> Price</mat-label
             >
-            <input matInput formControlName="price" type="number" />
+            <input matInput formControlName="price" type="number" min="0"/>
             <mat-icon matIconSuffix>attach_money</mat-icon>
           </mat-form-field>
         </div>

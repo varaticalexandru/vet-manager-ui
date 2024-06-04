@@ -14,8 +14,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NativeDateModule } from '@angular/material/core';
-import { Appointment, NewAppointment, statusOptions } from '../../../commons/model/appointment/appointment.model';
-import { extractDatePart, getDateTime } from '../../../commons/utils/date-utils';
+import {
+  Appointment,
+  NewAppointment,
+  statusOptions,
+} from '../../../commons/model/appointment/appointment.model';
+import {
+  extractDatePart,
+  getDateTime,
+} from '../../../commons/utils/date-utils';
 import { Doctor } from '../../../commons/model/doctor/doctor.model';
 import { DoctorService } from '../../../commons/services/doctor/doctor.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -26,7 +33,11 @@ import { Pet } from '../../../commons/model/pet/pet.model';
 import { PetService } from '../../../commons/services/pets/pet.service';
 import { AppointmentService } from '../../../commons/services/appointment/appointment.service';
 import { ServiceService } from '../../../commons/services/service/service.service';
-import { Service, NewService, Services } from '../../../commons/model/service/service.model';
+import {
+  Service,
+  NewService,
+  Services,
+} from '../../../commons/model/service/service.model';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -72,12 +83,12 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     this.appointmentForm = this.fb.group({
       newPet: [''], //boolean flag
       pet: [''],
-      newDoctor: [''],  // boolean flag
+      newDoctor: [''], // boolean flag
       doctor: [''],
       date: ['', Validators.required],
       time: ['', Validators.required],
       services: ['', Validators.required],
-      newServices: this.fb.array([])
+      newServices: this.fb.array([]),
     });
   }
 
@@ -91,27 +102,34 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   save() {
-    
     if (this.appointmentForm.valid) {
       const reqObj: NewAppointment = {
-        date:  getDateTime(
+        date: getDateTime(
           this.appointmentForm.value['date'],
-          this.appointmentForm.value['time'],
+          this.appointmentForm.value['time']
         ),
         // check if trimed value is empty, if so set to false
-        newPet: this.appointmentForm.value['newPet'] === '' ? false : this.appointmentForm.value['newPet'],
+        newPet:
+          this.appointmentForm.value['newPet'] === ''
+            ? false
+            : this.appointmentForm.value['newPet'],
         pet: this.appointmentForm.value['pet'],
-        newDoctor: this.appointmentForm.value['newDoctor'] === '' ? false : this.appointmentForm.value['newDoctor'],
+        newDoctor:
+          this.appointmentForm.value['newDoctor'] === ''
+            ? false
+            : this.appointmentForm.value['newDoctor'],
         doctor: this.appointmentForm.value['doctor'],
         services: this.appointmentForm.value['services'],
-        newServices: this.appointmentForm.value['newServices']
-      }
+        newServices: this.appointmentForm.value['newServices'],
+      };
 
-      console.log(reqObj);
+      this.appointmentService
+        .addAppointment(reqObj)
+        .subscribe((response: Appointment) => {
+          // console.log(response)
+        });
 
-      this.appointmentService.addAppointment(reqObj).subscribe((response: Appointment) => console.log(response));
-      
-      this.dialogRef.close(this.appointmentForm.value);
+      this.dialogRef.close(true);
     }
   }
 
@@ -124,7 +142,6 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       .fetchAllDoctors()
       .pipe(map((data: any): Doctor[] => data.doctors))
       .subscribe((doctors: Doctor[]) => {
-
         this.doctors = doctors;
       });
   }
@@ -134,30 +151,27 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       .fetchAllPets()
       .pipe(map((data: any): Pet[] => data.pets))
       .subscribe((pets: Pet[]) => {
-
         this.pets = pets;
       });
   }
 
   loadServices() {
-    this.serviceService
-      .fetchAllServices()
-      .subscribe((services: Services) => {
-        this.services = services.services;
-      });
+    this.serviceService.fetchAllServices().subscribe((services: Services) => {
+      this.services = services.services;
+    });
   }
 
   flipNewDoctor() {
     this.newDoctor = !this.newDoctor;
     this.appointmentForm.patchValue({
-      newDoctor: this.newDoctor
+      newDoctor: this.newDoctor,
     });
   }
 
   flipNewPet() {
     this.newPet = !this.newPet;
     this.appointmentForm.patchValue({
-      newPet: this.newPet
+      newPet: this.newPet,
     });
   }
 
@@ -168,7 +182,7 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
   addNewService() {
     const newServiceGroup = this.fb.group({
       name: ['', Validators.required],
-      price: ['', Validators.required]
+      price: ['', Validators.required],
     });
     this.newServices.push(newServiceGroup);
   }
