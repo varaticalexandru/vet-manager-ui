@@ -46,7 +46,7 @@ import { MatIconModule } from '@angular/material/icon';
     NgxMatTimepickerModule,
     MatDatepickerModule,
     CurrencyPipe,
-    MatIconModule
+    MatIconModule,
   ],
   providers: [],
   templateUrl: './appointment-add.component.html',

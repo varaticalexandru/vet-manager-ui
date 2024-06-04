@@ -9,18 +9,21 @@
   <form [formGroup]="appointmentForm">
     @if (newPet) {
     <mat-form-field class="full-width">
-      <mat-label>Pet Name</mat-label>
+      <mat-label>New pet's name</mat-label>
       <input matInput formControlName="pet" />
+      <mat-icon matIconSuffix>pets</mat-icon>
     </mat-form-field>
     } @else {
     <mat-form-field class="full-width">
-      <mat-label>Specity a pet name</mat-label>
+      <mat-label>Choose a pet</mat-label>
       <mat-select formControlName="pet">
         @for (pet of pets; track pet.id) {
         <mat-option [value]="pet.id">
           {{ pet.name }}
+          <mat-icon>pets</mat-icon>
         </mat-option>
         }
+        
       </mat-select>
     </mat-form-field>
     }
@@ -36,8 +39,9 @@
 
     @if (newDoctor) {
     <mat-form-field class="full-width">
-      <mat-label>New Doctor Name</mat-label>
+      <mat-label>New doctor's name</mat-label>
       <input matInput formControlName="doctor" />
+      <mat-icon matIconSuffix>person</mat-icon>
     </mat-form-field>
     } @else {
     <mat-form-field class="full-width">
@@ -46,6 +50,7 @@
         @for (doctor of doctors; track doctor.id) {
         <mat-option [value]="doctor.id">
           {{ doctor.firstName }} {{ doctor.lastName }}
+          <mat-icon>person</mat-icon>
         </mat-option>
         }
       </mat-select>
@@ -82,7 +87,9 @@
     <mat-form-field class="full-width">
       <mat-label>Choose a time</mat-label>
       <input matInput [ngxMatTimepicker]="picker" formControlName="time" />
-      <mat-icon class="timepicker-icon" (click)="picker.open()"  matSuffix>access_time</mat-icon>
+      <mat-icon class="timepicker-icon" (click)="picker.open()" matSuffix
+        >access_time</mat-icon
+      >
       <ngx-mat-timepicker #picker></ngx-mat-timepicker>
     </mat-form-field>
 
@@ -90,8 +97,11 @@
       <mat-label>Choose desired services</mat-label>
       <mat-select formControlName="services" multiple>
         @for (service of services; track service.id) {
-        <mat-option [value]="service.id">{{ service.name }}</mat-option>
-        }
+        <mat-option [value]="service.id">
+          {{ service.name }}
+          <mat-icon>settings</mat-icon>
+        </mat-option>
+      }
       </mat-select>
     </mat-form-field>
 
@@ -103,25 +113,27 @@
       <div [formGroupName]="i" class="new-service-item">
         <div class="new-service-fields width-80">
           <mat-form-field class="full-width">
-            <mat-label>New Service Name</mat-label>
+            <mat-label>New Service <strong>#{{ i + 1 }}</strong> Name</mat-label>
             <input matInput formControlName="name" />
+            <mat-icon matSuffix>settings</mat-icon>
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <mat-label>New Service Price</mat-label>
+            <mat-label>New Service <strong>#{{ i + 1 }}</strong> Price</mat-label>
             <input matInput formControlName="price" type="number" />
+            <mat-icon matSuffix>attach_money</mat-icon>
           </mat-form-field>
         </div>
-        
+
         <div class="delete-new-service-section">
           <button
-          class="delete-new-service-button"
-          mat-mini-fab
-          color="warn"
-          (click)="removeNewService(i)"
-        >
-          <mat-icon>delete_forever</mat-icon>
-        </button>
+            class="delete-new-service-button"
+            mat-mini-fab
+            color="warn"
+            (click)="removeNewService(i)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
         </div>
       </div>
       }
