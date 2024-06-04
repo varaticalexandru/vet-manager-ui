@@ -93,3 +93,16 @@ export const emptyAppointmentsPaginated: PaginatedResponse = {
     },
     empty: true
 }
+
+export function getIconForStatus(status: string): string {
+  switch (status) {
+    case 'CREATED':
+      return 'create';
+    case 'CONFIRMED':
+      return 'check_circle';
+    case 'CLOSED':
+      return 'lock';
+    default:
+      return '';
+  }
+}

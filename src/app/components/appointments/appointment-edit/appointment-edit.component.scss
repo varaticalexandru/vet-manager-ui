@@ -1,3 +1,40 @@
 .full-width {
   width: 100%;
 }
+
+.slide-toggle {
+  margin-bottom: 20px;
+}
+
+.dtp-action-button {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.dtp-action-button:last-child {
+  margin-right: 20px !important;
+}
+
+.new-service-item {
+  display: flex;
+  align-items: start;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.new-service-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.width-80 {
+  width: 80%;
+}
+
+.timepicker-icon:hover {
+  cursor: pointer;
+}
+
+.total-cost-field {
+  margin-top: 20px;
+}
