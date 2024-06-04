@@ -89,6 +89,7 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
       time: ['', Validators.required],
       services: ['', Validators.required],
       newServices: this.fb.array([]),
+      totalCost: [{ value: 0, disabled: true }],
     });
   }
 
@@ -97,6 +98,13 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     this.loadDoctors();
     this.loadPets();
     this.statusOptions = statusOptions;
+
+    this.appointmentForm.controls['services'].valueChanges.subscribe(() => {
+      setTimeout(() => this.updateTotalCost());
+    });
+    this.appointmentForm.controls['newServices'].valueChanges.subscribe(() => {
+      setTimeout(() => this.updateTotalCost());
+    });
   }
 
   ngOnDestroy(): void {}
@@ -189,5 +197,26 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
 
   removeNewService(index: number) {
     this.newServices.removeAt(index);
+  }
+
+  updateTotalCost() {
+    let totalCost = 0;
+
+    const selectedServiceIds = this.appointmentForm.value['services'];
+    for (const id of selectedServiceIds) {
+      const service = this.services.find((service) => service.id === id);
+      if (service && service.price) {
+        totalCost += service.price.cost;
+      }
+    }
+
+    const newServices = this.appointmentForm.value['newServices'];
+    for (const newService of newServices) {
+      if (newService.price) {
+        totalCost += newService.price;
+      }
+    }
+
+    this.appointmentForm.controls['totalCost'].setValue(totalCost);
   }
 }
