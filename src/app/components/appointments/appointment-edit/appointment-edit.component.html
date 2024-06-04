@@ -1,52 +1,189 @@
 <h1 mat-dialog-title>Edit <strong>Appointment</strong></h1>
 <div mat-dialog-content>
   <form [formGroup]="appointmentForm">
+    <div class="full-width slide-toggle">
+      <mat-slide-toggle
+        [checked]="newPet"
+        (change)="flipNewPet()"
+        color="primary"
+        >New pet</mat-slide-toggle
+      >
+    </div>
+
+    @if (newPet) {
     <mat-form-field class="full-width">
-      <mat-label>Pet Name</mat-label>
-      <input matInput formControlName="petName">
+      <mat-label>New pet's name</mat-label>
+      <input matInput formControlName="pet" />
+      <mat-icon matIconSuffix>pets</mat-icon>
+    </mat-form-field>
+    } @else {
+    <mat-form-field class="full-width">
+      <mat-label>Choose a pet</mat-label>
+      <mat-select formControlName="pet">
+        @for (pet of pets; track pet.id) {
+        <mat-option [value]="pet.id">
+          {{ pet.name }}
+          <mat-icon>pets</mat-icon>
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    }
+
+    <div class="full-width slide-toggle">
+      <mat-slide-toggle
+        [checked]="newDoctor"
+        (change)="flipNewDoctor()"
+        color="primary"
+        >New doctor</mat-slide-toggle
+      >
+    </div>
+
+    @if (newDoctor) {
+    <mat-form-field class="full-width">
+      <mat-label>New doctor's name</mat-label>
+      <input matInput formControlName="doctor" />
+      <mat-icon matIconSuffix>person</mat-icon>
+    </mat-form-field>
+    } @else {
+    <mat-form-field class="full-width">
+      <mat-label>Choose a doctor</mat-label>
+      <mat-select formControlName="doctor">
+        @for (doctor of doctors; track doctor.id) {
+        <mat-option [value]="doctor.id">
+          {{ doctor.firstName }} {{ doctor.lastName }}
+          <mat-icon>person</mat-icon>
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    }
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="pdt" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="pdt"></mat-datepicker-toggle>
+      <mat-datepicker #pdt type="datetime" [touchUi]="true">
+        <mat-datepicker-actions class="actions">
+          <button
+            class="dtp-action-button"
+            mat-button
+            color="warn"
+            matDatepickerCancel
+          >
+            CANCEL
+          </button>
+          <button
+            class="dtp-action-button"
+            mat-button
+            color="link"
+            matDatepickerApply
+          >
+            APPLY
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+      <mat-hint>{{ appointmentForm.value.datetime | date : "short" }}</mat-hint>
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Doctor First Name</mat-label>
-      <input matInput formControlName="doctorFirstName">
+      <mat-label>Choose a time</mat-label>
+      <input matInput [ngxMatTimepicker]="picker" formControlName="time" />
+      <mat-icon class="timepicker-icon" (click)="picker.open()" matSuffix
+        >access_time</mat-icon
+      >
+      <ngx-mat-timepicker #picker></ngx-mat-timepicker>
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Doctor Last Name</mat-label>
-      <input matInput formControlName="doctorLastName">
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Status</mat-label>
-      <!-- <input matInput formControlName="status"> -->
+      <mat-label>Choose a status</mat-label>
       <mat-select formControlName="status">
         @for (status of statusOptions; track $index) {
-            <mat-option [value]="status">
-                {{status}}
-              </mat-option>
+        <mat-option [value]="status">
+          {{ status }}
+          <mat-icon>
+            {{ getIconByStatus(status) }}
+          </mat-icon>
+        </mat-option>
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-label>Diagnostic</mat-label>
-      <input matInput formControlName="diagnostic">
+      <mat-label>Write a diagnostic</mat-label>
+      <input matInput formControlName="diagnostic" />
+      <!-- add mat-icon -->
+      <mat-icon matSuffix>description</mat-icon>
     </mat-form-field>
 
     <mat-form-field class="full-width">
+      <mat-label>Choose desired services</mat-label>
+      <mat-select formControlName="services" multiple>
+        @for (service of services; track service.id) {
+        <mat-option [value]="service.id">
+          {{ service.name }}
+          <mat-icon>settings</mat-icon>
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <h2>New <strong>Services</strong></h2>
+
+    <div formArrayName="newServices" class="new-service-section">
+      @for (newService of newServices.controls; track newService.value; let i =
+      $index) {
+      <div [formGroupName]="i" class="new-service-item">
+        <div class="new-service-fields width-80">
+          <mat-form-field class="full-width">
+            <mat-label
+              >New Service <strong>#{{ i + 1 }}</strong> Name</mat-label
+            >
+            <input matInput formControlName="name" />
+            <mat-icon matIconSuffix>settings</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label
+              >New Service <strong>#{{ i + 1 }}</strong> Price</mat-label
+            >
+            <input matInput formControlName="price" type="number" />
+            <mat-icon matIconSuffix>attach_money</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="delete-new-service-section">
+          <button
+            class="delete-new-service-button"
+            mat-mini-fab
+            color="warn"
+            (click)="removeNewService(i)"
+          >
+            <mat-icon>delete_forever</mat-icon>
+          </button>
+        </div>
+      </div>
+      }
+    </div>
+    <button mat-raised-button color="link" (click)="addNewService()">
+      ADD SERVICE
+    </button>
+
+    <mat-form-field class="full-width total-cost-field">
       <mat-label>Total Cost</mat-label>
-      <input [disabled]="true" matInput formControlName="totalCost">
+      <input [disabled]="true" matInput formControlName="totalCost" />
     </mat-form-field>
   </form>
 </div>
+
 <div mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="cancel()">CANCEL</button>
-  <button mat-raised-button color="primary" (click)="save()" [disabled]="!appointmentForm.valid">SAVE</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="save()"
+    [disabled]="!appointmentForm.valid"
+  >
+    SAVE
+  </button>
 </div>
