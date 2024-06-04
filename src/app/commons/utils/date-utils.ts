@@ -5,7 +5,7 @@ export function extractDatePart(dateString: string): string {
 
 // convert time to 24h format
 export function getDateTime(date: string, time: string): string {  
-  const [hours, minutes, modifier] = time.split(':');
+  const [hours, minutes, modifier] = time.split(/[:\s]/);
   let hours24 = parseInt(hours);
   if (modifier === 'PM' && hours24 !== 12) {
     hours24 += 12;

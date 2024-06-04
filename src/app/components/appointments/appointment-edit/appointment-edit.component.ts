@@ -12,13 +12,17 @@ import {
   MAT_DIALOG_DATA,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { Appointment } from '../../../commons/model/appointment/appointment.model';
+import {
+  Appointment,
+  UpdAppointment,
+} from '../../../commons/model/appointment/appointment.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {
   extractDatePart,
   extractLocalTime,
+  getDateTime,
 } from '../../../commons/utils/date-utils';
 import { MatSelectModule } from '@angular/material/select';
 import { statusOptions } from '../../../commons/model/appointment/appointment.model';
@@ -31,7 +35,10 @@ import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Doctor } from '../../../commons/model/doctor/doctor.model';
 import { Pet } from '../../../commons/model/pet/pet.model';
-import { Service, Services } from '../../../commons/model/service/service.model';
+import {
+  Service,
+  Services,
+} from '../../../commons/model/service/service.model';
 import { map } from 'rxjs';
 import { AppointmentService } from '../../../commons/services/appointment/appointment.service';
 import { DoctorService } from '../../../commons/services/doctor/doctor.service';
@@ -62,7 +69,6 @@ import { getIconForStatus } from '../../../commons/model/appointment/appointment
   styleUrl: './appointment-edit.component.scss',
 })
 export class AppointmentEditComponent implements OnInit, OnDestroy {
-
   statusOptions: string[] = [];
   doctors: Doctor[] = [];
   pets: Pet[] = [];
@@ -90,7 +96,7 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
       time: [extractLocalTime(data.date), Validators.required],
       status: [data.status, Validators.required],
       diagnostic: [data.diagnostic],
-      services: ['', Validators.required],
+      services: [data.services.map((service: Service) => service.id), Validators.required],
       newServices: this.fb.array([]),
       totalCost: [{ value: data.totalCost, disabled: true }],
     });
@@ -108,9 +114,36 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
 
   save() {
     if (this.appointmentForm.valid) {
-      console.log(this.appointmentForm.value);
+      const reqObj: UpdAppointment = {
+        id: this.data.id,
+        date: getDateTime(
+          this.appointmentForm.value['date'],
+          this.appointmentForm.value['time']
+        ),
+        newPet:
+          this.appointmentForm.value['newPet'] === ''
+            ? false
+            : this.appointmentForm.value['newPet'],
+        pet: this.appointmentForm.value['pet'],
+        newDoctor:
+          this.appointmentForm.value['newDoctor'] === ''
+            ? false
+            : this.appointmentForm.value['newDoctor'],
+        doctor: this.appointmentForm.value['doctor'],
+        services: this.appointmentForm.value['services'],
+        newServices: this.appointmentForm.value['newServices'],
+        status: this.appointmentForm.value['status'],
+        diagnostic: this.appointmentForm.value['diagnostic'],
+      };
+
       
-      this.dialogRef.close(this.appointmentForm.value);
+      this.appointmentService
+        .updateAppointment(this.data.id, reqObj)
+        .subscribe((response: Appointment) => {
+          // console.log(response)
+        });
+
+      this.dialogRef.close(true);
     }
   }
 

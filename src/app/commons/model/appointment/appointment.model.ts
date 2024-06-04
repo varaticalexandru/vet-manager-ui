@@ -13,7 +13,7 @@ export interface Appointment {
   pet: Pet;
   status: StatusOptions;
   doctor: Doctor;
-  services: Service[];
+  services: Array<Service>;
   totalCost: number;
 }
 
@@ -23,32 +23,33 @@ export interface Appointments {
 
 
 export interface NewAppointment {
-  date: string;
+  date: string | null | undefined;
   newPet: boolean | null | undefined;
   pet: number | string | null | undefined;
   newDoctor: boolean | null | undefined;
   doctor: number | string | null | undefined;
-  services: number[];
-  newServices: NewService[];
+  services: Array<number>;
+  newServices: Array<NewService>;
 }
 
-export interface AppointmentUpdate {
-  id: number;
-  date: string;
-  diagnostic: string | null;
-  petId: number;
-  petName: Pet;
-  status: StatusOptions;
-  doctorId: number;
-  doctorFirstName: string;
-  doctorLastName: string;
+export interface UpdAppointment {
+  id: number | null | undefined;
+  date: string | null | undefined;
+  newPet: boolean | null | undefined;
+  pet: number | string | null | undefined;
+  newDoctor: boolean | null | undefined;
+  doctor: number | string | null | undefined;
+  services: Array<number>;
+  newServices: Array<NewService>;
+  diagnostic: string | null | undefined;
+  status: StatusOptions | null | undefined;
 }
 
 export interface PaginatedResponse {
   totalElements: number;
   totalPages: number;
   size: number;
-  content: Appointment[];
+  content: Array<Appointment>;
   number: number;
   sort: {
     empty: boolean;
@@ -77,7 +78,7 @@ export const emptyAppointmentsPaginated: PaginatedResponse = {
     totalElements: 0,
     totalPages: 0,
     size: 5,
-    content: [] as Appointment[],
+    content: [] as Array<Appointment>,
     number: 0,
     sort: { empty: true, sorted: false, unsorted: true },
     first: true,

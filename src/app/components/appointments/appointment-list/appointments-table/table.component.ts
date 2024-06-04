@@ -35,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentEditComponent } from '../../appointment-edit/appointment-edit.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-table',
@@ -61,11 +62,11 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
   page_size: number = 5;
 
   @Input() displayedColumns: Array<string> = [];
+  @Input() data: Array<Appointment> = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  data: Appointment[] = [];
   resultsLength = 0;
   isLoadingResults = true;
 
@@ -80,7 +81,8 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private appointmentService: AppointmentService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngAfterViewInit(): void {
@@ -149,13 +151,11 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log(result);
-
-        // this.appointmentService
-        //   .updateAppointment(appointment.id, result)
-        //   .subscribe(() => {
-        //     this.refreshTable();
-        //   });
+        this.refreshTable();
+        this._snackBar.open('Appointment updated successfully', 'Close', {
+          duration: 5000,
+          politeness: 'assertive',
+        });
       }
     });
   }
@@ -188,5 +188,13 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  deleteAppointment(appointment: any) {}
+  deleteAppointment(appointment: any) {
+    this.appointmentService.deleteAppoitnment(appointment.id).subscribe(() => {
+      this.refreshTable();
+      this._snackBar.open('Appointment deleted successfully', 'Close', {
+        duration: 5000,
+        politeness: 'assertive',
+      });
+    });
+  }
 }

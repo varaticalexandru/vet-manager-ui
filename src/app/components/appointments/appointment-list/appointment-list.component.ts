@@ -7,7 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentAddComponent } from '../appointment-add/appointment-add.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Appointments } from '../../../commons/model/appointment/appointment.model';
+import { Appointment, PaginatedResponse } from '../../../commons/model/appointment/appointment.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-appointment-list',
@@ -24,9 +26,17 @@ import { Appointments } from '../../../commons/model/appointment/appointment.mod
   styleUrl: './appointment-list.component.scss',
 })
 export class AppointmentListComponent implements OnInit, OnDestroy {
+  
+  appointments: Array<Appointment> = [];
+  sortBy:string = "date";
+  sortOrder:string = "desc";
+  page:number = 0;
+  size:number = 5;
+  
   constructor(
     private appointmentService: AppointmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -35,9 +45,9 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
 
   loadAppointments(): void {
     this.appointmentService
-      .fetchAllAppointments()
-      .subscribe((appointments: Appointments) => {
-        // console.log(appointments);
+      .fetchAppointmentsByPageable(this.sortBy, this.sortOrder, this.page, this.size)
+      .subscribe((data: PaginatedResponse) => {
+        this.appointments = data.content;
       });
   }
 
@@ -50,7 +60,13 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // console.log(result);
+      if (result) {
+        this.loadAppointments();
+        this._snackBar.open('Appointment created successfully', 'Close', {
+          duration: 5000,
+          politeness: 'assertive'
+        });
+      }
     });
   }
 }
