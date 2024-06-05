@@ -108,7 +108,7 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
         Validators.required,
       ],
       newServices: this.fb.array([]),
-      totalCost: [{ value: initialTotalCost, disabled: true }],
+      totalCost: [{ value: initialTotalCost, disabled: false }],
     });
   }
 
