@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class PetService {
 
-  fetchAllPetsUrl = `${environment.backend.url}/pets`; 
+  fetchAllPetsUrl = `${environment.backend.base_url}/pets`; 
 
   constructor(
     private http: HttpClient

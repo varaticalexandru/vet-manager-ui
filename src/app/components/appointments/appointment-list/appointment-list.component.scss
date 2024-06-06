@@ -28,7 +28,15 @@ mat-card {
   font-size: 2em;
 }
 
-.fab-button {
+.fab-button-new {
+  position: fixed;
+  right: 20px;
+  bottom: 100px;
+  width: 62px;
+  height: 62px;
+}
+
+.fab-button-log-out {
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -36,7 +44,7 @@ mat-card {
   height: 62px;
 }
 
-.fab-button mat-icon {
+button mat-icon {
   font-size: 42px; 
   height: 42px;
   width: 42px; 

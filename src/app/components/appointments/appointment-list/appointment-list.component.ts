@@ -9,6 +9,8 @@ import { AppointmentAddComponent } from '../appointment-add/appointment-add.comp
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Appointment, PaginatedResponse } from '../../../commons/model/appointment/appointment.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../commons/services/auth/auth-service/auth.service';
+import { LogOutComponent } from '../../auth/login/log-out/log-out.component';
 
 
 @Component({
@@ -36,7 +38,8 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private authService: AuthService,
+    private _snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +70,15 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
           politeness: 'assertive'
         });
       }
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+
+    this.dialog.open(LogOutComponent, {
+      maxWidth: '1200',
+      maxHeight: '800',
     });
   }
 }

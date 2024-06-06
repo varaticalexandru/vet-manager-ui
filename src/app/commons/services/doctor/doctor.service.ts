@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class DoctorService {
 
-  fetchAllDoctorsUrl = `${environment.backend.url}/doctors`; 
+  fetchAllDoctorsUrl = `${environment.backend.base_url}/doctors`; 
 
   constructor(
     private http: HttpClient

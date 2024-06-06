@@ -9,26 +9,26 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="submit()">
       <p>
-        <mat-form-field class="email-field" appearance="fill">
-          <mat-label>Email</mat-label>
+        <mat-form-field class="username-field" appearance="fill">
+          <mat-label>Username</mat-label>
           <input
             matInput
             type="text"
-            placeholder="Ex. pat@example.com"
-            formControlName="email"
+            placeholder="Ex. user123"
+            formControlName="username"
             [errorStateMatcher]="matcher"
           />
-          <mat-icon matSuffix>email</mat-icon>
+          <mat-icon matSuffix>person</mat-icon>
           <mat-error
             *ngIf="
-              loginForm.controls['email'].hasError('email') &&
-              !loginForm.controls['email'].hasError('required')
+              loginForm.controls['username'].hasError('username') &&
+              !loginForm.controls['username'].hasError('required')
             "
           >
-            Please enter a valid email address
+            Please enter a valid username
           </mat-error>
-          <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
-            Email is <strong>required</strong>
+          <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+            Username is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </p>
