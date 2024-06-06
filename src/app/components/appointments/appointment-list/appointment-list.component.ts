@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { AppointmentService } from '../../../commons/services/appointment/appointment.service';
 import { TableComponent } from './appointments-table/table.component';
@@ -31,6 +31,9 @@ import { LogOutConfirmComponent } from '../../auth/login/log-out-confirm/log-out
   styleUrl: './appointment-list.component.scss',
 })
 export class AppointmentListComponent implements OnInit, OnDestroy {
+
+  @ViewChild(TableComponent) tableComponent!: TableComponent;
+
   appointments: Array<Appointment> = [];
   sortBy: string = 'date';
   sortOrder: string = 'desc';
@@ -45,7 +48,7 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    
+
   }
 
 
@@ -58,13 +61,12 @@ export class AppointmentListComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        
         this._snackBar.open('Appointment created successfully', 'Close', {
           duration: 5000,
           politeness: 'assertive',
         });
-      }
+
+        this.tableComponent.refreshTable();
     });
   }
 
