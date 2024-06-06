@@ -8,8 +8,8 @@ import { Appointment, NewAppointment, Appointments, PaginatedResponse, emptyAppo
   providedIn: 'root',
 })
 export class AppointmentService {
-  base_url = `${environment.backend.url}/appointments`;
-  fetch_all_url = `${environment.backend.url}/appointments/all`;
+  base_url = `${environment.backend.base_url}/appointments`;
+  fetch_all_url = `${environment.backend.base_url}/appointments/all`;
 
   constructor(private http: HttpClient) {}
 
