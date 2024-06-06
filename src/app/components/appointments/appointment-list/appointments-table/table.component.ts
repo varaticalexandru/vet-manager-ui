@@ -169,13 +169,11 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.refreshTable();
-        this._snackBar.open('Appointment updated successfully', 'Close', {
-          duration: 5000,
-          politeness: 'assertive',
-        });
-      }
+      this.refreshTable();
+      this._snackBar.open('Appointment updated successfully', 'Close', {
+        duration: 5000,
+        politeness: 'assertive',
+      });
     });
   }
 
