@@ -9,7 +9,7 @@ import { Service, Services } from '../../model/service/service.model';
 })
 export class ServiceService {
 
-  baseUrl: string = `${environment.backend.url}/services`;
+  baseUrl: string = `${environment.backend.base_url}/services`;
 
   constructor(
     private http: HttpClient
