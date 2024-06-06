@@ -6,6 +6,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { FailedAuthComponent } from '../../../../components/auth/login/failed-auth/failed-auth.component';
+import { JwtService } from '../jwt/jwt.service';
+import { check } from '@igniteui/material-icons-extended';
+import { LogOutComponent } from '../../../../components/auth/login/log-out/log-out.component';
 
 @Injectable({
   providedIn: 'root',
@@ -23,13 +26,13 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private jwtService: JwtService
   ) {}
 
   login(user: UserLogin) {
     this.http.post<AuthResponse>(this.auth_url, user).subscribe({
       next: (data: AuthResponse) => {
-        console.log(data);
         
         localStorage.setItem('token', data.jwt);
         this.loggedIn.next(true);
@@ -49,6 +52,14 @@ export class AuthService {
     this.loggedIn.next(false);
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  checkTokenExpiration() {
+    const token = localStorage.getItem('token');
+    if (token && this.jwtService.isTokenExpired(token)) {
+      this.logout();
+      this.dialog.open(LogOutComponent);
+    }
   }
 
   get isLoggedIn(): Observable<boolean> {
