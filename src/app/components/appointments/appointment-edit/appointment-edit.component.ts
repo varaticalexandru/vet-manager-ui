@@ -92,7 +92,6 @@ export class AppointmentEditComponent implements OnInit, OnDestroy {
   ) {
 
     const initialTotalCost = this.calculateInitialTotalCost(this.data.services);
-    console.log(initialTotalCost);
 
     this.appointmentForm = this.fb.group({
       newPet: [''], //boolean flag
