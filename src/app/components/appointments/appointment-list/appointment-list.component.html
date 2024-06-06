@@ -17,15 +17,23 @@
         [data]="appointments"
       ></app-table>
     </mat-card-content>
-
   </mat-card>
 </div>
 
-<button
-  mat-fab
-  color="primary"
-  class="fab-button"
-  (click)="goToNewAppointment()"
->
-  <mat-icon>add</mat-icon>
-</button>
+  <button
+    mat-fab
+    color="primary"
+    class="fab-button-new"
+    (click)="goToNewAppointment()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <button
+    mat-fab
+    color="warn"
+    class="fab-button-log-out"
+    (click)="logout()"
+  >
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
