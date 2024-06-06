@@ -1,4 +1,4 @@
-import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, NgModule, OnDestroy, OnInit, Output} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -64,6 +64,9 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./appointment-add.component.scss'],
 })
 export class AppointmentAddComponent implements OnInit, OnDestroy {
+
+  @Output() appointmentAdded = new EventEmitter<void>();
+
   statusOptions: string[] = [];
   doctors: Doctor[] = [];
   pets: Pet[] = [];
@@ -218,5 +221,9 @@ export class AppointmentAddComponent implements OnInit, OnDestroy {
     }
 
     this.appointmentForm.controls['totalCost'].setValue(totalCost);
+  }
+
+  onAppointmentAdded() {
+    this.appointmentAdded.emit();
   }
 }
