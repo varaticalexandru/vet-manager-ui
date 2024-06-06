@@ -38,6 +38,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentEditComponent } from '../../appointment-edit/appointment-edit.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LogOutComponent } from '../../../auth/login/log-out/log-out.component';
 
 @Component({
   selector: 'app-table',
@@ -61,14 +62,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
-  page_size: number = 5;
-
   @Input() displayedColumns: Array<string> = [];
-  @Input() data: Array<Appointment> = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  page_size: number = 5;
+  data: Array<Appointment> = [];
   resultsLength = 0;
   isLoadingResults = true;
 
@@ -124,7 +124,11 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? parseFloat(this.totalCostFilter.value)
                 : null
             )
-            .pipe(catchError(() => of(emptyAppointmentsPaginated)));
+            .pipe(
+              catchError(() => {
+                return of(emptyAppointmentsPaginated);
+              })
+            );
         }),
         map((data: PaginatedResponse) => {
           this.isLoadingResults = false;
@@ -137,7 +141,20 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
           return data.content;
         })
       )
-      .subscribe((data: Appointment[]) => (this.data = data));
+      .subscribe({
+        next: (data: Array<Appointment>) => {
+          this.data = data;
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.isLoadingResults = false;
+          this.dialog.open(LogOutComponent, {
+            maxWidth: '1200',
+            maxHeight: '800',
+          });
+          this.router.navigate(['/login']);
+        },
+      });
   }
 
   ngOnInit(): void {}
